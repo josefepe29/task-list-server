@@ -9,4 +9,4 @@ Mi aplicación admite las siguientes operaciones:
 3. Marcar una tarea como completada
 4. Eliminar una tarea
 
-Este proyecto ofrece una solución simple pero efectiva para gestionar tareas diarias. Puedes probarlo ejecutando el servidor localmente y experimentar con las funciones de la lista de tareas. ¡Espero que encuentres esta aplicación útil para mantenerte organizado!"
+Este proyecto ofrece una solución simple pero efectiva para gestionar tareas diarias. Puedes probarlo ejecutando el servidor localmente y experimentar con las funciones de la lista de tareas. ¡Espero que encuentres esta aplicación útil para mantenerte organizado!
