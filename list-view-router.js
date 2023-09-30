@@ -2,7 +2,16 @@ const express = require('express');
 const router = express.Router();
 
 const listaTareas = require('./script')
-const tareas = listaTareas.tareas
+
+// router.use((req, res, next) => {
+//   const parametro = req.params.tarea
+
+//   if (parametro != 'completas' || parametro != 'incompletas') {
+//     res.status(404).send("Not found")
+//   }
+
+//   next()
+// })
 
 // Ruta para listar tareas completas
 router.get('/completas', (req, res) => {

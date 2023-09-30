@@ -4,8 +4,21 @@ const port = 8080;
 const vista = require('./list-view-router');
 const edicion = require('./list-edit-router');
 
-// Middleware para permitir solicitudes JSON
 app.use(express.json());
+
+function validarMetodosHTTP(req, res, next) {
+  const validarMetodos = ['GET', 'POST', 'PUT', 'DELETE'];
+
+  if (!validarMetodos.includes(req.method)) {
+  
+    return res.status(400).json({ error: 'Método HTTP no válido' });
+  }
+
+  next();
+}
+
+app.use(validarMetodosHTTP)
+
 app.use('/edicion', edicion)
 app.use('/vista',vista)
 
