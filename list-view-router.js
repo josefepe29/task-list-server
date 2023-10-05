@@ -2,16 +2,25 @@ const express = require('express');
 const router = express.Router();
 
 const listaTareas = require('./script')
+const tareas = listaTareas.tareas
 
-// router.use((req, res, next) => {
-//   const parametro = req.params.tarea
+router.get('/listar/:id', (req, res) => {
+  const tareaId = req.params.id; 
+    if (tareaId === undefined || tareaId === null || tareaId.trim() === '' || tareaId < 0) {
+        res.status(404).json('El ID de la tarea no es válido');
+        return;
+  }
+  const tareaIndex = listaTareas.obtenerTarea(tareaId)
+    if (!tareas[tareaIndex]) {
+        res.status(404).json({ error: 'Tarea no encontrada' });
+    } else {
+        res.status(200).json(tareas[tareaIndex]);
+  }
+})
 
-//   if (parametro != 'completas' || parametro != 'incompletas') {
-//     res.status(404).send("Not found")
-//   }
-
-//   next()
-// })
+router.get('/listar', (req, res) => {
+  res.status(200).json(listaTareas.tareas)
+})
 
 // Ruta para listar tareas completas
 router.get('/completas', (req, res) => {

@@ -10,7 +10,7 @@ router.use((req, res, next) => {
     // Cuerpo vacío en solicitudes POST y PUT
     return res.status(400).json({ error: 'Cuerpo de solicitud vacío' });
   }
-  if (!Object.keys(req.body).includes('id') || !Object.keys(req.body).includes('descripcion')) {
+  if (!keys.includes('id') || !keys.includes('descripcion')) {
     return res.status(400).json({ error: 'Atributos faltantes' });
   }
   next();

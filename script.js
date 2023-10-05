@@ -1,5 +1,19 @@
 const tareas = [];
 
+//Funcion para obtener una sola tarea
+
+function obtenerTarea(id) {
+  const tareaObtenida = tareas.findIndex((t) => t.id == id);
+  
+  return tareaObtenida
+}
+
+//Funcion para listar todas las tareas
+function listarTareas() {
+  return tareas
+}
+
+
 // Funcion para listar tareas completadas
 
 function listarTareasCompletas() {
@@ -7,6 +21,8 @@ function listarTareasCompletas() {
     const filtradoCompleto = tareas.filter((tarea) => tarea.estado == true)
     return filtradoCompleto
 }
+
+//Funcion para lista tareas incompletas
 
 function listarTareasIncompletas() {
     const filtradoIncompleto = tareas.filter((tarea) => tarea.estado == false)
@@ -41,6 +57,7 @@ function completarTarea(indice) {
 
 
 module.exports = {
+  obtenerTarea,
   listarTareasCompletas,
   listarTareasIncompletas,
   agregarTarea,
