@@ -9,7 +9,20 @@ require('dotenv').config()
 const PORT = process.env.PORT || 3000
 const SECRET_KEY = process.env.SECRET_KEY
 
+function validarCredenciales (req, res,next) {
+  const token = req.header("Authorization");
 
+  if (!token) {
+    return res.status(401).json({ error: "Token no proporcionado" });
+  }
+    // Verifica y decodifica el token JWT
+  jwt.verify(token, SECRET_KEY, (err, decoded) => { 
+    if (err) {  
+      return res.status(401).json({ error: "Token inválido" });
+    }
+  });
+    next()
+};
 
 app.use(express.json());
 
@@ -20,21 +33,17 @@ const usuarios = [
 
 function validarMetodosHTTP(req, res, next) {
   const validarMetodos = ['GET', 'POST', 'PUT', 'DELETE'];
-
-  if (!validarMetodos.includes(req.method)) {
   
+  if (!validarMetodos.includes(req.method)) {
+    
     return res.status(400).json({ error: 'Método HTTP no válido' });
   }
-
+  
   next();
 }
 
 app.use(validarMetodosHTTP)
 
-app.use('/edicion', edicion)
-app.use('/vista',vista)
-
-app.use(validarMetodosHTTP)
 
 app.post("/login", (req, res) => {
   const { usuario, contrasena } = req.body;
@@ -48,31 +57,17 @@ app.post("/login", (req, res) => {
     return res.status(401).json({ error: "Credenciales inválidas" });
   }
 
-  const token = jwt.sign({ id: user.id, usuario:user.usuario, contrasena:user.contrasena }, SECRET_KEY, {
-    expiresIn: "1h", // Expira en 1 hora
-  });
+  const token = jwt.sign({ id: user.id, usuario:user.usuario, contrasena:user.contrasena }, SECRET_KEY);
 
-  res.header('Authorization',token).json({ token });
+  res.json({ token });
 });
 
-app.get("/ruta-protegida", (req, res) => {
-  const token = req.header("Authorization");
+app.use(validarCredenciales)
 
-  if (!token) {
-    return res.status(401).json({ error: "Token no proporcionado" });
-  }
-    // Verifica y decodifica el token JWT
-  jwt.verify(token, SECRET_KEY, (err, decoded) => { 
-    if (!decoded) {  
-      return res.status(401).json({ error: "Token inválido" });
-    }
-    res.json({ mensaje: "Acceso autorizado", usuario: decoded });
-  });
-});
-
-app.use('/edicion', edicion)
+app.use('/edicion',edicion)
 app.use('/vista',vista)
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+

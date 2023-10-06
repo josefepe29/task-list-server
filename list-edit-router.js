@@ -10,28 +10,27 @@ router.use((req, res, next) => {
     // Cuerpo vacío en solicitudes POST y PUT
     return res.status(400).json({ error: 'Cuerpo de solicitud vacío' });
   }
-  if (!keys.includes('id') || !keys.includes('descripcion')) {
+  if (!Object.keys(req.body).includes('id') || !Object.keys(req.body).includes('descripcion')) {
     return res.status(400).json({ error: 'Atributos faltantes' });
   }
   next();
 })
 
 
+
 // Ruta para agregar una nueva tarea
 router.post('/tarea', (req, res) => {
   const { id, descripcion } = req.body;
-    if (id === undefined || id === null  || id < 0) {
-        res.status(400).json('El ID de la tarea no es válido');
-        return;
-      }
+  if (id === undefined || id === null  || id < 0) {
+    return res.status(400).json('El ID de la tarea no es válido');
+  }
+  if (tareas.some((tarea) => tarea.id === id)) {
+    return res.status(400).json('El ID de la tarea ya existe');
+  } 
       
-      // Verificar si el ID ya existe en las tareas existentes
-      if (tareas.some((tarea) => tarea.id === id)) {
-          res.status(400).json('El ID de la tarea ya existe');
-          return;
-      }
-    listaTareas.agregarTarea(id,descripcion)
-  res.status(201).send(listaTareas.tareas);
+  listaTareas.agregarTarea(id,descripcion)
+  res.json(listaTareas.tareas);
+    
 });
 
 // Ruta para marcar una tarea como completada
@@ -39,15 +38,13 @@ router.put('/tarea/:id', (req, res) => {
     const tareaId = req.params.id;
     const tareaIndex = tareas.findIndex((t) => t.id == tareaId);
     if (tareaId === undefined || tareaId === null || tareaId.trim() === '' || tareaId < 0) {
-        res.status(404).json('El ID de la tarea no es válido');
-        return;
+        return res.status(404).json('El ID de la tarea no es válido');
     }
     if (!tareas[tareaIndex]) {
-        res.status(404).json({ error: 'Tarea no encontrada' });
-    } else {
+       return res.status(404).json({ error: 'Tarea no encontrada' });
+    } 
       listaTareas.completarTarea(tareaIndex)
-        res.status(200).json(tareas);
-  }
+      res.json(tareas);
 });
 
 // Ruta para eliminar una tarea
@@ -63,7 +60,7 @@ router.delete('/tarea/:id', (req, res) => {
         res.status(404).json({ error: 'Tarea no encontrada' });
   } else {
     listaTareas.eliminarTarea(tareaIndex)
-    res.status(200).json(tareas);
+    res.json(tareas);
   }
 });
 
