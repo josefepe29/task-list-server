@@ -3,6 +3,7 @@ const vista = require('./list-view-router');
 const app = express();
 const edicion = require('./list-edit-router');
 const jwt = require('jsonwebtoken')
+const usuarios = require('./usuarios.json')
 require('dotenv').config()
 
 //Variables de entorno
@@ -42,11 +43,6 @@ function validarMetodosHTTP(req, res, next) {
 }
 
 //Usuarios (pendiente de implementacion en archivo json)
-
-const usuarios = [
-  { id: 1, usuario: "usuario1", contrasena: "contrasena1" },
-  { id: 2, usuario: "usuario2", contrasena: "contrasena2" },
-];
 
 //Middleware para validar metodos HTTP
 app.use(validarMetodosHTTP)
