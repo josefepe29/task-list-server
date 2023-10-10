@@ -5,9 +5,13 @@ const edicion = require('./list-edit-router');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+//Variables de entorno
 
 const PORT = process.env.PORT || 3000
 const SECRET_KEY = process.env.SECRET_KEY
+app.use(express.json());
+
+//Funcion middleware de aplicacion para validar credenciales de los usuarios
 
 function validarCredenciales (req, res,next) {
   const token = req.header("Authorization");
@@ -24,12 +28,7 @@ function validarCredenciales (req, res,next) {
     next()
 };
 
-app.use(express.json());
-
-const usuarios = [
-  { id: 1, usuario: "usuario1", contrasena: "contrasena1" },
-  { id: 2, usuario: "usuario2", contrasena: "contrasena2" },
-];
+//Funcion middleware de aplicacion para validar metodos HTTP
 
 function validarMetodosHTTP(req, res, next) {
   const validarMetodos = ['GET', 'POST', 'PUT', 'DELETE'];
@@ -42,6 +41,14 @@ function validarMetodosHTTP(req, res, next) {
   next();
 }
 
+//Usuarios (pendiente de implementacion en archivo json)
+
+const usuarios = [
+  { id: 1, usuario: "usuario1", contrasena: "contrasena1" },
+  { id: 2, usuario: "usuario2", contrasena: "contrasena2" },
+];
+
+//Middleware para validar metodos HTTP
 app.use(validarMetodosHTTP)
 
 
@@ -62,7 +69,11 @@ app.post("/login", (req, res) => {
   res.json({ token });
 });
 
+//Middleware para validar credenciales de los usuarios
+
 app.use(validarCredenciales)
+
+//Uso de vista y edicion
 
 app.use('/edicion',edicion)
 app.use('/vista',vista)

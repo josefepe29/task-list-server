@@ -4,6 +4,7 @@ const router = express.Router();
 const listaTareas = require('./script')
 const tareas = listaTareas.tareas
 
+//Ruta get para poder listar objetos por id
 
 router.get('/listar/:id', (req, res) => {
   const tareaId = req.params.id; 
@@ -18,6 +19,8 @@ router.get('/listar/:id', (req, res) => {
         res.json(tareas[tareaIndex]);
   }
 })
+
+//Ruta para listar todos los elementos
 
 router.get('/listar', (req, res) => {
   res.json(listaTareas.tareas)

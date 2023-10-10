@@ -4,6 +4,8 @@ const router = express.Router();
 const listaTareas = require('./script')
 const tareas = listaTareas.tareas
 
+//Middleware para validar metodos PUT y POST
+
 router.use((req, res, next) => {
   const keys = Object.keys(req.body)
   if ((req.method === 'POST' || req.method === 'PUT') && Object.keys(req.body).length == 0) {
