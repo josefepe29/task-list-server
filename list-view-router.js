@@ -28,7 +28,7 @@ router.get('/listar', (req, res) => {
 
 
 //Ruta para listar incompletas o completas
-router.get('/:accion', (req, res) => {
+router.get('/listar/:accion', (req, res) => {
   const accion = req.params.accion
 
   if (accion == 'completas') {
