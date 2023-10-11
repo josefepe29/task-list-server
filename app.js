@@ -24,9 +24,10 @@ function validarCredenciales (req, res,next) {
   jwt.verify(token, SECRET_KEY, (err, decoded) => { 
     if (err) {  
       return res.status(401).json({ error: "Token inválido" });
+    } else {
+      next()
     }
   });
-    next()
 };
 
 //Funcion middleware de aplicacion para validar metodos HTTP
